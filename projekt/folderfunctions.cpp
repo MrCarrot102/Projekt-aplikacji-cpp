@@ -1,10 +1,10 @@
 // folderfunctions.cpp
-
-#include "folderfunctions.h"
+#include <QString>
 #include <QDir>
-#include <QProcess>
 #include <QMessageBox>
+#include <QProcess>
 #include <QSettings>
+#include <QListWidget>
 
 void showFolderContent(const QString &folderPath)
 {
@@ -46,6 +46,9 @@ void saveCreatedFolders(const QListWidget *folderList)
 void clearCreatedFolders ( QListWidget *folderList )
 {
     folderList  -> clear();
-    QSetting settings("MyApp" , "FolderApp");
+    QSettings settings("MyApp" , "FolderApp");
     settings.remove ("createdFolders");
 }
+
+
+#define FOLDERFUNCTIONS_H

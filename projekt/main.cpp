@@ -1,5 +1,4 @@
 // main.cpp
-
 #include <QApplication>
 #include <QWidget>
 #include <QVBoxLayout>
@@ -17,34 +16,42 @@
 #include <QMessageBox>
 #include <QProcess>
 #include <QSettings>
-#include "folderfunctions.h" // Dodaj dołączenie pliku nagłówkowego
+#include <QTabWidget>
+#include <QTabWidget>
+#include "folderfunctions.h"
+#include "widgetfunctions.h"
+#include "makrofunctions.h"
+
 
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
     QWidget window;
-    window.setWindowTitle("Utwórz folder");
-    window.resize(400, 400);
+    window.setWindowTitle("Utwórz folder, makro, lub inne");
+    window.resize(600, 400);
 
-    QVBoxLayout layout(&window);
+    QTabWidget tabWidget(&window);
+
+    // Zakładka do tworzenia folderów
+    QWidget folderTab;
+    QVBoxLayout folderLayout(&folderTab);
 
     QLineEdit folderNameInput;
     folderNameInput.setPlaceholderText("Nazwa folderu");
-    layout.addWidget(&folderNameInput);
+    folderLayout.addWidget(&folderNameInput);
 
     QPushButton chooseLocationButton("Wybierz lokalizację");
-    layout.addWidget(&chooseLocationButton);
+    folderLayout.addWidget(&chooseLocationButton);
 
     QPushButton createButton("Utwórz folder");
-    layout.addWidget(&createButton);
+    folderLayout.addWidget(&createButton);
 
-    QListWidget folderList;  // Dodajemy listę na stworzone foldery
-    layout.addWidget(&folderList);
+    QListWidget folderList;
+    folderLayout.addWidget(&folderList);
 
-    QString selectedLocation = QDir::homePath() + "/Pulpit"; // Ustaw domyślną lokalizację na pulpicie
+    QString selectedLocation = QDir::homePath() + "/Pulpit";
 
-    // Wczytywanie zapamiętanych folderów
     QSettings settings("MyApp", "FolderApp");
     QStringList folders = settings.value("createdFolders").toStringList();
     folderList.addItems(folders);
@@ -65,11 +72,9 @@ int main(int argc, char *argv[])
                     QString folderPath = dir.filePath(folderName);
                     folderNameInput.clear();
 
-                    // Aktualizacja ikony folderu na liście
                     QListWidgetItem *folderItem = new QListWidgetItem(QIcon(":/folder.png"), folderName);
                     folderList.addItem(folderItem);
 
-                    // Zapisz listę folderów
                     saveCreatedFolders(&folderList);
                 }
             } else {
@@ -79,7 +84,6 @@ int main(int argc, char *argv[])
     });
 
     folderList.setContextMenuPolicy(Qt::CustomContextMenu);
-
     QObject::connect(&folderList, &QWidget::customContextMenuRequested, [&]() {
         QMenu contextMenu;
         QListWidgetItem *selectedItem = folderList.currentItem();
@@ -93,16 +97,13 @@ int main(int argc, char *argv[])
                 QString folderName = selectedItem->text();
                 QString folderPath = QDir(selectedLocation).filePath(folderName);
 
-                // Wybieranie nowej ikony z plików
                 QString iconPath = QFileDialog::getOpenFileName(nullptr, "Wybierz nową ikonę", QDir::homePath(), "Ikony (*.png *.ico)");
 
                 if (!iconPath.isEmpty()) {
-                    // Aktualizacja ikony folderu na liście
                     QPixmap pixmap(iconPath);
                     QIcon folderIcon(pixmap);
                     selectedItem->setIcon(folderIcon);
 
-                    // Aktualizacja ikony folderu na pulpicie
                     setFolderIcon(folderPath, iconPath);
                 }
             } else if (selectedAction == showContentAction) {
@@ -118,21 +119,30 @@ int main(int argc, char *argv[])
                         dir.removeRecursively();
                         delete selectedItem;
 
-                        // Zaktualizuj zapisane foldery
                         saveCreatedFolders(&folderList);
                     }
                 }
             }
         } else {
-            // Dodaj opcję czyszczenia listy przy kliknięciu prawym przyciskiem myszy na pustym polu w liście
             QAction *clearListAction = contextMenu.addAction("Wyczyść listę folderów");
-            connect(clearListAction, &QAction::triggered, [&]() {
+            QObject::connect(clearListAction, &QAction::triggered, [&]() {
                 clearCreatedFolders(&folderList);
             });
         }
     });
 
+    // Zakładka do tworzenia makr
+    createMacrosTab(&tabWidget);
+    // zakladka do widgetow
+    createWidgetsTab(&tabWidget);
+    // Dodaj zakładki do głównego widżetu zakładek
+    tabWidget.addTab(&folderTab, "Foldery");
+    //glowny uklad
+    QVBoxLayout mainLayout(&window);
+    mainLayout.addWidget(&tabWidget);
+
     window.show();
 
     return app.exec();
+
 }

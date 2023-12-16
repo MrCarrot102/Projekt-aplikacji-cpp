@@ -14,9 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    folderfunctions.cpp
+        folderfunctions.cpp \
+        makrofunctions.cpp \
+        widgetfunctions.cpp
 
 HEADERS  += mainwindow.h \
-    folderfunctions.h
+    folderfunctions.h \
+    makrofunctions.h \
+    widgetfunctions.h
 
 FORMS    += mainwindow.ui
