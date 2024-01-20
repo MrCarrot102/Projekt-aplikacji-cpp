@@ -1,16 +1,29 @@
-#ifndef FOLDERFUNTIONS_H
-#define FOLDERFUNTIONS_H
+// folderfunctions.h
+#ifndef FOLDERFUNCTIONS_H
+#define FOLDERFUNCTIONS_H
 
 #include <QString>
 #include <QListWidget>
+#include <QInputDialog>
+#include <QMessageBox>
+#include <QFile>
 
-// funkcja do pokazywania zawartosci
-void showFolderContent ( const QString &folderPath );
-// ustawianie ikony
-bool setFolderIcon ( const QString &folderPath , const QString &iconPath );
-// lista utworzonych folderow
-void saveCreatedFolders ( const QListWidget *folderList );
-// czyszczenie listy utworzonych folderow
-void clearCreatedFolders ( QListWidget *folderList );
+void showFolderContent(const QString &folderPath);
 
-#endif // FOLDERFUNTIONS_H
+bool setFolderIcon(const QString &folderPath, const QString &iconPath);
+
+void saveCreatedFolders(const QListWidget *folderList);
+
+void clearCreatedFolders(QListWidget *folderList);
+
+void deleteFilesInFolder(const QString &folderPath);
+
+void renameFilesInFolder(const QString &folderPath);
+
+void createSubfolder(const QString &folderPath);
+
+void showFolderContentInList(QListWidget *folderList, const QString &folderPath);
+
+void showFolderInLocation ( const QString &location );
+
+#endif // FOLDERFUNCTIONS_H
