@@ -16,12 +16,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
         folderfunctions.cpp \
-        makrofunctions.cpp \
+        snakewidget.cpp \
         widgetfunctions.cpp
 
 HEADERS  += mainwindow.h \
     folderfunctions.h \
-    makrofunctions.h \
+    snakewidget.h \
     widgetfunctions.h
 
 FORMS    += mainwindow.ui

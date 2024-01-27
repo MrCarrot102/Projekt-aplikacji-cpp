@@ -7,6 +7,7 @@
 #include <QSettings>
 #include <QListWidget>
 #include <QInputDialog>
+#include <QRandomGenerator>
 
 void showFolderContent(const QString &folderPath)
 {
@@ -130,15 +131,23 @@ void renameFilesInFolder(const QString &folderPath)
 
 
 // tworzenie podfolderow
-
 void createSubfolder(const QString& folderPath) {
+
     QDir dir(folderPath);
-    QString subfolderName = "NowyPodfolder";  // Możesz dostosować nazwę podfolderu
+
+    // Znajdź ostatni utworzony podkatalog
+    QStringList subdirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Time);
+
+    // Utwórz nowy podkatalog z unikalną liczbą w nazwie
+    QString subfolderName = QString("NowyPodFolder") + QString::number(QRandomGenerator:: global()->bounded(1 , 100 ) );
+
     if (dir.mkdir(subfolderName)) {
         QMessageBox::information(nullptr, "Sukces", "Utworzono podfolder pomyślnie.");
-    } else {
+    }
+    else {
         QMessageBox::warning(nullptr, "Błąd", "Nie udało się utworzyć podfolderu.");
     }
+
 }
 
 // przegladanie folderu w formie listy
