@@ -18,7 +18,7 @@
 #include <QElapsedTimer>
 #include <QTime>
 #include <QMessageBox>
-#include <QCalendarWidget>  // Dodaj nagłówek QCalendarWidget
+#include <QCalendarWidget>
 #include <QUrl>
 
 
@@ -95,21 +95,7 @@ private slots:
 
     void updateTimer() {
         --remainingTime;
-
-        //int remainingMinutes = remainingTime / 60;
-        //int remainingSeconds = remainingTime % 60;
-
         updateLabels();
-
-        /*if (remainingTime <= 0) {
-            countdownTimer->stop();
-            // powidaomienie dzwiekowe
-            QSound :: play("/home/mateusz/Pulpit/projekt/alarm.mp3");
-            QMessageBox msgBox;
-            msgBox.setText("Minutnik " + timer.name + " rzakończony!");
-            msgBox.addButton("Zakończ", QMessageBox::NoRole);
-            msgBox.exec();
-        }*/
     }
 
     void updateLabels() {
@@ -383,6 +369,3 @@ void createWidgetsTab(QTabWidget *tabWidget) {
     // Dodaj zakładkę do głównego widżetu zakładek
     tabWidget->addTab(widgetsTab, "Widgety");
 }
-// do zrobienia
-// ustawic dziwiek konca minutnika
-// dodac notatki do pulpitu i folderow nowy format albo txt

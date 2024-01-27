@@ -18,7 +18,9 @@
 #include <QSettings>
 #include <QTabWidget>
 #include "folderfunctions.h"
+#include "pongwidget.h"
 #include "widgetfunctions.h"
+#include "snakewidget.h"
 
 int main(int argc, char *argv[])
 {
@@ -169,14 +171,30 @@ int main(int argc, char *argv[])
 
     // Dodaj zakładki do głównego widżetu zakładek
     tabWidget.addTab(&folderTab, "Foldery");
-    tabWidget.addTab(&makroTab, "Makra");
     tabWidget.addTab(&widgetsTab, "Widgety");
+
 
     // Dodaj główną zakładkę
     QVBoxLayout mainLayout(&window);
     mainLayout.addWidget(&tabWidget);
 
+    SnakeWidget snakeWidget;
+    tabWidget.addTab(&snakeWidget, "Snake");
+
+    //PongWidget pongWidget;
+    //tabWidget.addTab(&pongWidget, "Pong");
+
     window.show();
+
 
     return app.exec();
 }
+
+
+
+
+
+
+
+
+// aby bylo 200 lini kodu :)
